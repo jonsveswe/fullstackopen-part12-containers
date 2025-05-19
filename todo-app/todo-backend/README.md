@@ -20,6 +20,12 @@ Pass connection url with env `REDIS_URL`
 
 # My comments
 
+For the Dockerfile:
+
 `docker build -t part12backend .`
 
 `docker run -p 3000:3000 part12backend`
+
+Using the compose file:
+
+`docker compose up`
