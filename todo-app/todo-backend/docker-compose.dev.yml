@@ -1,0 +1,15 @@
+services:
+  mongo:
+    image: mongo
+    ports:
+      - 3456:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: the_database
+    volumes:  
+      # Bind mount. The first argument is the path on the host, the second argument is the path in the container.
+      # docker-entrypoint-initdb.d is a special folder used by official Docker images for certain databases (like PostgreSQL, MySQL, and MariaDB) 
+      # to initialize the database with scripts or data when the container is first created. 
+      # This happens only if the database data directory is empty — i.e., on the first container run.   
+      - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js

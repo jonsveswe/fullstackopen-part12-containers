@@ -29,3 +29,8 @@ For the Dockerfile:
 Using the compose file:
 
 `docker compose up`
+
+`docker compose -f docker-compose.dev.yml up -d`
+
+
+
