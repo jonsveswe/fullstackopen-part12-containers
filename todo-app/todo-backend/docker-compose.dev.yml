@@ -13,3 +13,16 @@ services:
       # to initialize the database with scripts or data when the container is first created. 
       # This happens only if the database data directory is empty — i.e., on the first container run.   
       - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:8.0.1
+    ports:
+      - 6379:6379
+    command: ['redis-server', '--appendonly', 'yes'] # Overwrite the CMD to be able to persist data
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mongo_data:
+  redis_data:

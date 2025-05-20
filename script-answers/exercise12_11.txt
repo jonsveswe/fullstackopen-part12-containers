@@ -1,0 +1,11 @@
+Gå in i redis container via exec command eller Docker Desktop.
+
+redis-cli 
+
+GET counter
+
+SET counter 9001
+
+GET counter
+
+DEL counter
