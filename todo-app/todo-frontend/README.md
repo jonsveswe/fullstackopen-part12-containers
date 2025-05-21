@@ -18,5 +18,9 @@ Use env VITE_BACKEND_URL to set where the backend for this application is
 - Start the backend mongo db and redis services running in containers: ``docker compose -f docker-compose.dev.yml up -d``
 - Start the backend express app "outside a container": ``npm run dev``
 - Go to frontend folder
-- Start the react frontend app: ``docker compose up``
+- Start the react frontend app: ``docker compose up --build``
+
+For development:
+
+``docker compose -f docker-compose.dev.yml up -d``
 

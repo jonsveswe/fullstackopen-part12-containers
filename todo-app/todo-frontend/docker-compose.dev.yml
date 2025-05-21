@@ -1,0 +1,13 @@
+# docker compose -f docker-compose.dev.yml up -d
+services:
+  app:
+    image: todo-dev # The image that will be pulled for the service. If build is specified, the built image will be given this tag.
+    build:
+      context: . # The context will pick this directory as the "build context"
+      dockerfile: dev.Dockerfile # This will simply tell which dockerfile to read
+    volumes:
+      - ./:/usr/src/app # The path can be relative, so ./ is enough to say "the same location as the docker-compose.yml"
+      - /usr/src/app/node_modules
+    ports:
+      - 5173:5173
+    container_name: todo-dev # This will name the container hello-front-dev
