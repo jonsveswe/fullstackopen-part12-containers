@@ -1,0 +1,65 @@
+# docker compose -f docker-compose.dev.yml up -d
+services:
+  app:
+    image: todo-dev # Imge built with todo-app/todo-frontend/dev.Dockerfile 
+    container_name: todo-dev # This will name the container hello-front-dev
+    volumes:
+      - ./todo-frontend/:/usr/src/app
+      - /usr/src/app/node_modules # Hack. Anonymous volume will prevent the bind mount to sync and overwrite the node_modules folder. Path is in the container. 
+
+  backend:
+    image: todo-backend-dev
+    container_name: todo-backend-dev
+    volumes:
+      - ./todo-backend/:/usr/src/app  
+      - /usr/src/app/node_modules # Hack. Anonymous volume will prevent the bind mount to sync and overwrite the node_modules folder. Path is in the container. 
+    environment:
+      MONGO_URL: mongodb://root:example@mongo:27017/the_database # Note we can't use 'mongodb://root:example@localhost:27017/the_database', with localhost like before. We need to use 'mongo' instead.
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - mongo
+      - redis
+
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: the_database
+    volumes:  
+      # Bind mount. The first argument is the path on the host, the second argument is the path in the container.
+      # docker-entrypoint-initdb.d is a special folder used by official Docker images for certain databases (like PostgreSQL, MySQL, and MariaDB) 
+      # to initialize the database with scripts or data when the container is first created. 
+      # This happens only if the database data directory is empty — i.e., on the first container run.   
+      - ./todo-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - mongo_data:/data/db
+    container_name: mongo
+
+  redis:
+    image: redis:8.0.1
+    command: ['redis-server', '--appendonly', 'yes'] # Overwrite the CMD to be able to persist data
+    volumes:
+      - redis_data:/data
+    container_name: redis
+
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    # We just need to expose the Nginx port to the host machine since the access to the backend and frontend is proxied to the right container port by Nginx. 
+    # Because Nginx, frontend and backend are defined in the same Docker compose configuration, Docker puts those to the same Docker network and thanks to that, 
+    # Nginx has direct access to frontend and backend containers ports. (And backend has access to mongo and redis containers ports too.)
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - app # wait for the frontend container to be started
+
+  # debug-helper:    
+  #   image: busybox
+
+  
+volumes:
+  mongo_data:
+  redis_data:
+  

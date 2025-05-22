@@ -10,6 +10,7 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.js'],
   },
   server: {
+    allowedHosts: ['app', 'localhost', '127.0.0.1'], // 'app' whem nginx reverse proxy is used. 
     watch: {
       usePolling: true, // fixes live reload inside Docker. See https://vitejs.dev/config/server-options.html
     },

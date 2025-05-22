@@ -11,7 +11,8 @@ RUN npm install
 
 COPY . .
 
-ENV VITE_BACKEND_URL "http://localhost:3000"
+# ENV VITE_BACKEND_URL "http://localhost:3000"
+ENV VITE_BACKEND_URL "http://localhost:8080/api"
 
 # npm run dev is the command to start the application in development mode
 # "The extra parameters -- --host in the CMD are needed to expose the development server to be visible outside the Docker network. 
