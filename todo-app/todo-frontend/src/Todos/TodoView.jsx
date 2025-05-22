@@ -8,6 +8,7 @@ const TodoView = () => {
   const [todos, setTodos] = useState([])
 
   const refreshTodos = async () => {
+    console.log(import.meta.env.VITE_BACKEND_URL)
     const { data } = await axios.get('/todos')
     setTodos(data)
   }
