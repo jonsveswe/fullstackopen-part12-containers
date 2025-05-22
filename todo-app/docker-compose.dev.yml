@@ -2,6 +2,9 @@
 services:
   app:
     image: todo-dev # Imge built with todo-app/todo-frontend/dev.Dockerfile 
+    build:
+      context: ./todo-frontend
+      dockerfile: dev.Dockerfile
     container_name: todo-dev # This will name the container hello-front-dev
     volumes:
       - ./todo-frontend/:/usr/src/app
@@ -9,6 +12,9 @@ services:
 
   backend:
     image: todo-backend-dev
+    build:
+      context: ./todo-backend
+      dockerfile: dev.Dockerfile    
     container_name: todo-backend-dev
     volumes:
       - ./todo-backend/:/usr/src/app  

@@ -20,6 +20,10 @@ Pass connection url with env `REDIS_URL`
 
 # My comments
 
+Read README one folder up and use those docker compose files. 
+
+Old:
+
 For the Dockerfile:
 
 `docker build -t part12backend .`
