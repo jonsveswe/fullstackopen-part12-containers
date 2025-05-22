@@ -1,8 +1,25 @@
 services:
+  app:
+    image: todo-backend-dev
+    build: 
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules # Hack. Anonymous volume will prevent the bind mount to sync and overwrite the node_modules folder. Path is in the container. 
+    ports:
+      - 3000:3000
+    environment:
+      MONGO_URL: mongodb://root:example@mongo:27017/the_database # Note we can't use 'mongodb://root:example@localhost:27017/the_database', with localhost like before. We need to use 'mongo' instead.
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - mongo
+      - redis
+    
   mongo:
     image: mongo
     ports:
-      - 3456:27017
+      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
@@ -14,6 +31,7 @@ services:
       # This happens only if the database data directory is empty — i.e., on the first container run.   
       - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
       - mongo_data:/data/db
+    container_name: mongo
 
   redis:
     image: redis:8.0.1
@@ -22,6 +40,7 @@ services:
     command: ['redis-server', '--appendonly', 'yes'] # Overwrite the CMD to be able to persist data
     volumes:
       - redis_data:/data
+    container_name: redis
 
 volumes:
   mongo_data:

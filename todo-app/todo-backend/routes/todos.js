@@ -11,6 +11,8 @@ router.get('/', async (_, res) => {
 
 /* POST todo to listing. */
 router.post('/', async (req, res) => {
+  console.log("POST hej hej")
+  console.log(req.body)
   const todo = await Todo.create({
     text: req.body.text,
     done: false
@@ -37,6 +39,7 @@ singleRouter.delete('/', async (req, res) => {
 
 /* GET todo. */
 singleRouter.get('/', async (req, res) => {
+  console.log("hej")
   console.log(req.todo)
   res.send(req.todo);
 });

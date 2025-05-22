@@ -9,4 +9,9 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.js'],
   },
+  server: {
+    watch: {
+      usePolling: true, // fixes live reload inside Docker. See https://vitejs.dev/config/server-options.html
+    },
+  },
 })

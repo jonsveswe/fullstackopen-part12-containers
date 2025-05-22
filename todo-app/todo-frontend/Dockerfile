@@ -13,6 +13,7 @@ RUN npm run test
 FROM test AS build
 # This must be defined before build because this will be hardcoded into the static files during build. 
 # React/frontend doesn't have "real" environment variables that can be read during run time. 
+# Need to be prefixed with VITE_. 
 # Also frontend can reach the backend because the frontend code gets downloaded from the container and runs in the browser, rather than in the container.
 ENV VITE_BACKEND_URL "http://localhost:3000"
 RUN npm run build

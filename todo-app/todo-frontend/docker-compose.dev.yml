@@ -7,7 +7,11 @@ services:
       dockerfile: dev.Dockerfile # This will simply tell which dockerfile to read
     volumes:
       - ./:/usr/src/app # The path can be relative, so ./ is enough to say "the same location as the docker-compose.yml"
-      - /usr/src/app/node_modules
+      - /usr/src/app/node_modules # Hack. Anonymous volume will prevent the bind mount to sync and overwrite the node_modules folder. Path is in the container. 
     ports:
       - 5173:5173
     container_name: todo-dev # This will name the container hello-front-dev
+
+
+  # debug-helper:    
+  #   image: busybox
